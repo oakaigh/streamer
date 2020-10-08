@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+        <style>
+            video#player {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                bottom: 0px;
+                left: 0px;
+                margin: auto;
+                max-height: 100%;
+                max-width: 100%;
+                width: 100%;
+                height: 100%;
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+        <video controls id="player"></video>
+        <script>
+            var src_store = "stream_uri";
+            var video = document.getElementById('player');
+            var src;
+            while (!(src = prompt("Enter streaming URI",
+                        localStorage.getItem(src_store) || "")));
+            localStorage.setItem(src_store, src);
+
+            if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = src;
+            } else if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(src);
+                hls.attachMedia(video);
+            }
+        </script>
+    </body>
+</html>
